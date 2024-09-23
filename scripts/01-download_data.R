@@ -1,26 +1,39 @@
 #### Preamble ####
-# Purpose: Downloads and saves the data from [...UPDATE THIS...]
-# Author: Rohan Alexander [...UPDATE THIS...]
-# Date: 11 February 2023 [...UPDATE THIS...]
-# Contact: rohan.alexander@utoronto.ca [...UPDATE THIS...]
+# Purpose: Downloads and saves the Death of shelter residents mean age data from Opendatatoronto
+# Author: Haobo Ren
+# Date: 23 September 2024
+# Contact: haobo.ren@mail.utoronto.ca
 # License: MIT
-# Pre-requisites: [...UPDATE THIS...]
-# Any other information needed? [...UPDATE THIS...]
+# Pre-requisites: NA
+# Any other information needed? NA
 
 
 #### Workspace setup ####
 library(opendatatoronto)
 library(tidyverse)
-# [...UPDATE THIS...]
+
 
 #### Download data ####
-# [...ADD CODE HERE TO DOWNLOAD...]
 
+#Search package from opendatatoronto
+death_of_shelter_residents_package <- search_packages("Deaths of Shelter Residents")
 
+#Show package info
+package_info <- show_package(death_of_shelter_residents_package)
+package_info$id
+
+#Get the id of the data we wanted.
+resources <- death_of_shelter_residents_package %>% list_package_resources()
+resources
+
+#load the data on the 6th row.
+raw_data <- filter(resources, row_number()==6) %>% 
+  get_resource()
+
+#Take a look at our dataset
+head(raw_data)
 
 #### Save data ####
-# [...UPDATE THIS...]
-# change the_raw_data to whatever name you assigned when you downloaded it.
-write_csv(the_raw_data, "inputs/data/raw_data.csv") 
+write_csv(raw_data, "data/raw_data/raw_data.csv") 
 
-         
+      
