@@ -12,7 +12,7 @@
 library(tidyverse)
 
 #### Test for simulated data ####
-simulated_data <- read_csv("data/raw_data/simulated_data.csv")
+simulated_data <- read.csv("data/raw_data/simulated_data.csv")
 
 # Test for negative numbers
 min(simulated_data$total_decedents) <= 0
