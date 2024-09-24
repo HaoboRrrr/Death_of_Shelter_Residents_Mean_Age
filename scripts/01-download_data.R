@@ -1,11 +1,12 @@
 #### Preamble ####
-# Purpose: Downloads and saves the Death of shelter residents mean age data from Opendatatoronto
+# Purpose: Downloads and saves the total decedents of shelter residents data 
+#          from Opendatatoronto
 # Author: Haobo Ren
 # Date: 23 September 2024
 # Contact: haobo.ren@mail.utoronto.ca
 # License: MIT
-# Pre-requisites: NA
-# Any other information needed? NA
+# Pre-requisites: None
+# Any other information needed? None
 
 
 #### Workspace setup ####
