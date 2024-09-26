@@ -24,11 +24,10 @@ simulated_data <- tibble(
   total_decedents = rnorm(18,50,5)
 )
 
-#write simulated data as csv file
+#write simulated data as csv file, and save it in the directory "data/raw_data/simulated_data.csv"
 write.csv(simulated_data, "data/raw_data/simulated_data.csv")
 
-#See what the graph looks like.
-
+#use bar plot to visualise the simulated data, with total_decedents on the y axis.
 simulated_data |> 
   ggplot(aes(x = years, y = total_decedents)) +
   geom_bar(stat="identity") +

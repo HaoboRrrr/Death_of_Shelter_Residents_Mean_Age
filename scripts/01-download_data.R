@@ -19,7 +19,7 @@ library(tidyverse)
 #Search package from opendatatoronto
 death_of_shelter_residents_package <- search_packages("Deaths of Shelter Residents")
 
-#Show package info
+#Show package info and the ids in this package
 package_info <- show_package(death_of_shelter_residents_package)
 package_info$id
 
@@ -27,7 +27,7 @@ package_info$id
 resources <- death_of_shelter_residents_package %>% list_package_resources()
 resources
 
-#load the data on the 6th row.
+#load the data on the 6th row, which is the dataset we try to examine
 raw_data <- filter(resources, row_number()==6) %>% 
   get_resource()
 

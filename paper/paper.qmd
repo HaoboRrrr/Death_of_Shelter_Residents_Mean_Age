@@ -1,5 +1,5 @@
 ---
-title: "The Total Decedents of Shelter Residents in Toronto by Year"
+title: "The Decedents of Shelter Residents in Toronto by Year"
 subtitle: "The Decedents significantly increased during the pandemic"
 author: 
   - Haobo Ren
@@ -23,46 +23,78 @@ library(knitr)
 
 
 # Introduction
-Most people don't have a clear picture of what life is like for the homeless and those living in shelters. @krajewska2016differing It is often known that the homeless population has higher incidence of sickness and early mortality.The City is dedicated to recognizing new and developing problems in the shelter system and acting quickly to address them. @death_of_shelter_residents This paper aims to analyse 
-the trend and level of deaths numbers in shelter in a yearly basis from 2007 to 2024. \newline
+Most people don't have a clear picture of what life is like for the homeless and those living in shelters @krajewska2016differing. It is often known that the homeless population has higher incidence of sickness and early mortality.The City is dedicated to recognizing new and developing problems in the shelter system and acting quickly to address them @death_of_shelter_residents. This paper aims to analyse the average age of all decedents and the trend and level of deaths numbers in shelter in a yearly basis from 2007 to 2024. \newline
 
-This paper uses R @citeR to analyse involved data. In the process of analyzing and visualizing the data set, the flowing R packages are used: tidyverse @tidyverse, janitor @janitor, ggplot2 @ggplot2, opendatatoronto @opendatatoronto and knitr @knitr\newline
+This paper uses R @citeR to analyse involved data. In the process of analyzing and visualizing the data set, the flowing R packages are used: tidyverse @tidyverse, janitor @janitor, ggplot2 @ggplot2, dplyr @dplyr opendatatoronto @opendatatoronto and knitr @knitr\newline
 
 In the following Data section will exhibit the years and its corresponding total decedents in the shelters in Toronto area, and how the visulized data looks like. \newline
 
 # Data {#sec-data}
-The Toronto Shelter and Support Services Division has collected this information since 2007 and conducts an annual review of the data. (@fig-data)
+
+## Overview {#sec-data-overview}
+
+The Toronto Shelter and Support Services Division has collected the information of shelter deaths and the average age of decedents @death_of_shelter_residents since 2007 and conducts an annual review of the data. The death of shelter residents data is a subset of data shared by Toronto Public Health (TPH) on its Deaths of People Experiencing Homelessness dashboard. The initial data set has features like years, total decedents, average age of decedents, male and female decedents and so on. This study used select select function @dplyr, to select the interested features: years, total decedents, and average age of all decedents. The data type of year column in the original data was string, and in this study it was changed to integer. The cleaned data shown below(@fig-data). The data shows the year from 2007 to 2024ytd and its corresponding total decedents and average age.
 
 ```{r}
 #| label: fig-data
 #| fig-cap: Data of total decedents each year
 #| echo: false
+#| message: false
 data <- read_csv(here::here("data/analysis_data/analysis_data.csv"))
 knitr::kable(data)
 ```
 
-In this data, we can see that there were many decedents in the shelter each year from 2007 to 2024ytd. This means that people living in shelters are at greater risk than the general public.They may experience the threat of drug abuse, violence, illegal guns. @brown2011spread This raises a new question: Why does the government condone people living in shelters and even provide them with drugs? Isn't this making their lives worse? \newline
+In this data, we can see that there were many decedents in the shelter each year from 2007 to 2024ytd. This means that people living in shelters are at greater risk than the general public.They may experience the threat of drug abuse, violence, illegal guns @brown2011spread.  \newline
 
-After viewing the actual data, visualizing the data can provide us with a different perspective. (@fig-graph)
+## visualizing data: Total Decedents each year {#sec-decedents}
+After viewing the actual data, visualizing the data can provide us with a different perspective. The study used ggplot to plot the relationship between total decedents and years @ggplot2, the type of graph used was bar plot, with x-axis represent the year, and y-axis represent the total decedents. The fig-width was set to 10 in order to show the x-axis clearly. (@fig-graph1)
 ```{r}
-#| label: fig-graph
+#| label: fig-graph1
 #| fig-cap: Barplot of Total decedents each year
 #| fig-width: 10
 #| echo: false
+#| message: false
 data |> 
   ggplot(aes(x = year, y = total_decedents)) +
   geom_bar(stat="identity") +
   ggtitle("Bar plot of shelter residents' total decedents from 2007 to 2024 by year") +
-  xlab("Years") +
-  ylab("Total decedents")
+  xlab("Years") + ylab("Total decedents")
+
 
 ```
-The average deaths per year prior to 2020 was about 25, this number spikes during 2020 to 2023. During the pandemic. The operation of the shelter has been greatly affected during the epidemic. Toronto's medical resources are so stretched that they are unable to care for the people in the shelter. @khandor_2011_access
+The average deaths per year prior to 2019 was 25.9, this number spikes during 2020 to 2023. The graph is left skewed, most of death recorded between 2020 and 2023. During the pandemic. The operation of the shelter has been greatly affected during the epidemic. Toronto's medical resources are so stretched that they are unable to give medical care for the people in the shelter @khandor_2011_access.
+
+
+
+## Visualizing data: Average age of decedents {#sec-average-age}
+This study used plot function @citeR to plot a scatter plot(@fig-graph2). Average age of decedents was on the y-axis and year was on the x-axis. A linear model of average age of death respect to year was added to the scatter plot, with a downward slope of -0.1651.
+```{r}
+#| label: fig-graph2
+#| fig-cap: Scatter plot of average age of death and years
+#| fig-width: 10
+#| echo: false
+#| message: false
+#| warning: false
+
+plot(data$year, data$average_age_of_death_all_decedents,
+     main = "Scatterplot of Average age of decedents and year with Linear Line", 
+     xlab = "Years", 
+     ylab = "Average age", 
+     pch = 16, 
+     col = "blue", 
+     cex = 1.5)
+
+abline(lm(data$average_age_of_death_all_decedents ~ data$year), col="red", lwd = 2)
+
+lm(data$average_age_of_death_all_decedents ~ data$year)
+```
+The study shows the average age of death in shelter has decreasing trend with downward sloping of -0.1651, which means that the expected change of average age of death in shelter next year will be 0.1651 years younger.
 
 
 # Conclusion
-From these data, we know that people living in shelters are always living in danger, their life expectancy is shorter than most people in society. They are also the most likely to be forgotten when society is hit. Perhaps what the government needs to do is to guide such people to reintegrate into society and get back to work, rather than indulge them and think that they have fulfilled their obligations by just providing food.
+This study examines the number of total decedents in shelter from 2007 to 2024ytd, and the outcome is the number of decedents significantly increased during the Covid-19 pandemic @sec-decedents. The study also investigate the average age of decedents each year and the linear regression model of average age and year, the linear model show the average age of people dying in shelters is declining.
 
+From these data, we know that people living in shelters are always living in danger, their life expectancy is shorter than most people in society. They are also the most likely to be forgotten when society is hit. Perhaps what the government needs to do is to guide such people to reintegrate into society and get back to work, rather than indulge them and think that they have fulfilled their obligations by just providing food.
 
 
 
