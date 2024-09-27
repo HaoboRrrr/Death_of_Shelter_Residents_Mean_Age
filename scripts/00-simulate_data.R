@@ -21,7 +21,8 @@ set.seed(304)
 #total decedents, with mean = 50, sd = 5 
 simulated_data <- tibble(
   years = seq(2007,2024),
-  total_decedents = rnorm(18,50,5)
+  total_decedents = rnorm(18,50,5),
+  average_age_decedents = rnorm(18,50,1)
 )
 
 #write simulated data as csv file, and save it in the directory "data/raw_data/simulated_data.csv"
